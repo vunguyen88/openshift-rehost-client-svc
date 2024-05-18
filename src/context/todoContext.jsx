@@ -7,18 +7,18 @@ import PropTypes from 'prop-types';
 const iniTialTodoList = [];
 
 const TodoContext = createContext({
-  todos: todoList,
+  todoContext: iniTialTodoList,
 });
 
 export function TodoContextProvider(props) {
-  const [todos, dispatch] = useReducer(todoReducer, iniTialTodoList);
+  const [todoContext, todoDispatch] = useReducer(todoReducer, iniTialTodoList);
 
   // useEffect(() => {
   //   sessionStorage.setItem("auth", JSON.stringify(auth))
   // }, [auth])
 
   return (
-    <TodoContext.Provider value={{ todos, dispatch }}>
+    <TodoContext.Provider value={{ todoContext, todoDispatch }}>
       {props.children}
     </TodoContext.Provider>
   )

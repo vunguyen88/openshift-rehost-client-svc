@@ -15,25 +15,28 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from "moment";
 import AuthContext from "../../../context/authContext";
+import TodoContext from "../../../context/todoContext";
 
 function NewTodo() {
   const [ targetDate, setTargetDate ] = useState("");
   const [ title, setTitle ] = useState("");
   const [ reminder, setReminder ] = useState(false);
   const { auth, dispatch } = useContext(AuthContext);
+  const { todoContext, todoDispatch } = useContext(TodoContext);
 
   const handleReminderChange = (e) => {
     console.log('reminder ', e)
     setReminder(e.value);
   };
+
   const onSubmit = async () => {
     console.log(`click submit with value ${title} ${targetDate} ${reminder}`);
     try {
       let reqBody = {
         title: title,
         completed: false,
-        setReminder: reminder,
-        targetDate: targetDate
+        set_reminder: reminder,
+        target_date: targetDate
       };
 
       let config = {

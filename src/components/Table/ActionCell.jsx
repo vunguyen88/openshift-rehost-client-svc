@@ -16,7 +16,6 @@ function ActionCell({ todoId, completed }) {
 
   const { auth } = useContext(AuthContext);
 
-  console.log('token ...', auth.accessToken)
   const onMarkComplete = async () => {
     try {
       let res = await axios.patch(`http://localhost:8001/todos/${todoId}`, {}, {

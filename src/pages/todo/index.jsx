@@ -24,6 +24,7 @@ import DataTable from "../../components/Table"
 // Data
 import generateTodoData from "./components/TableData";
 import AuthContext from "../../context/authContext";
+import TodoContext from "../../context/todoContext";
 
 function TodoPage() {
 
@@ -31,17 +32,24 @@ function TodoPage() {
   const [todoList, setTodoList] = useState([]);
   const handleOpenNewTodo = () => setNewTodoOpen(true);
   const handleCloseNewTodo = () => setNewTodoOpen(false);
-  const {auth, dispatch } = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
+  const { todoContext, todoDispatch } = useContext(TodoContext)
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
+        // if todo context > 0, stop the fetch request
+        if (todoContext.length) return;
+        // if no context data available due to refresh or first time enter, fetch data and update context
         let res = await axios.get('http://localhost:8001/todos', {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`
           }
         });
-        if (res.status === 200 && res.data.status == "success") setTodoList([...res.data.data])
+        if (res.status === 200 && res.data.status == "success") {
+          setTodoList([...res.data.data])
+          todoDispatch({type: 'FETCH_TODO', todos: res.data.data})
+        }
         console.log('res ', res)
       } catch(e) {
         console.log('error ', e)
@@ -51,7 +59,8 @@ function TodoPage() {
     fetchTodos()
   }, [])
 
-  console.log('todolist ', todoList)
+  console.log('todolist ', todoList);
+  console.log('todo context ', todoContext )
 
   return (
     <PageLayout>
