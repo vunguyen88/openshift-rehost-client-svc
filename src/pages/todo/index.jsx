@@ -41,7 +41,8 @@ function TodoPage() {
         // if todo context > 0, stop the fetch request
         if (todos.length) return;
         // if no context data available due to refresh or first time enter, fetch data and update context
-        let res = await axios.get('http://localhost:8001/todos', {
+        // let res = await axios.get('http://localhost:8001/todos', {
+        let res = await axios.get('/todos', {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`
           }

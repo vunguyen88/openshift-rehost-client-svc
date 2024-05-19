@@ -22,7 +22,8 @@ function ActionCell({ todoId, completed }) {
 
   const onMarkComplete = async () => {
     try {
-      let res = await axios.patch(`http://localhost:8001/todos/${todoId}`, {}, {
+      // let res = await axios.patch(`http://localhost:8001/todos/${todoId}`, {}, {
+      let res = await axios.patch(`/todos/${todoId}`, {}, {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
         }
@@ -43,7 +44,8 @@ function ActionCell({ todoId, completed }) {
 
   const onDelete = async () => {
     try {
-      let res = await axios.delete(`http://localhost:8001/todos/${todoId}`, {
+      // let res = await axios.delete(`http://localhost:8001/todos/${todoId}`, {
+      let res = await axios.delete(`/todos/${todoId}`, {
         headers: {
           Authorization: `Bearer ${auth.accessToken}`
         }
