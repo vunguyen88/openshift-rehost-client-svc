@@ -49,7 +49,8 @@ function NewTodo() {
         }
       };
 
-      let res = await axios.post(`http://localhost:8001/todos`, reqBody, config)
+      // let res = await axios.post(`http://localhost:8001/todos`, reqBody, config)
+      let res = await axios.post(`/todos`, reqBody, config)
       if (res.status === 201 && res.data?.status === "success") {
         // trigger alert
         setAlertMessage('Add new todo successful!');
