@@ -1,24 +1,24 @@
 // Auth context using disspatch and session storage for user auth
 
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import { todoReducer } from "../reducers/todoReducer";
 import PropTypes from 'prop-types';
 
 const iniTialTodoList = [];
 
 const TodoContext = createContext({
-  todoContext: iniTialTodoList,
+  todos: iniTialTodoList,
 });
 
 export function TodoContextProvider(props) {
-  const [todoContext, todoDispatch] = useReducer(todoReducer, iniTialTodoList);
+  const [todos, todoDispatch] = useReducer(todoReducer, iniTialTodoList);
 
   // useEffect(() => {
   //   sessionStorage.setItem("auth", JSON.stringify(auth))
   // }, [auth])
 
   return (
-    <TodoContext.Provider value={{ todoContext, todoDispatch }}>
+    <TodoContext.Provider value={{ todos, todoDispatch }}>
       {props.children}
     </TodoContext.Provider>
   )

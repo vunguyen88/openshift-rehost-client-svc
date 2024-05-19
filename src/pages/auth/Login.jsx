@@ -103,7 +103,7 @@ function LoginPage() {
                   <SoftTypography variant="caption" fontWeight="bold" color="info" >
                       Success. Click &nbsp; 
                   </SoftTypography>
-                  <SoftTypography variant="caption" fontWeight="bold" color="dark" onClick={() => navigate(`/todo`)}>
+                  <SoftTypography variant="caption" fontWeight="bold" color="dark" sx={{cursor: "pointer"}} onClick={() => navigate(`/todo`)}>
                       here &nbsp; 
                   </SoftTypography>
                   <SoftTypography variant="caption" fontWeight="bold" color="info">
@@ -120,7 +120,7 @@ function LoginPage() {
               </SoftBox>
             }
             <SoftBox mt={4} mb={1}>
-              <SoftButton variant="gradient" color="info" fullWidth onClick={ handleOnLoginSubmit }>
+              <SoftButton variant="gradient" color="info" fullWidth onClick={ handleOnLoginSubmit } disabled={loginStatus ? true : false}>
                 Login
               </SoftButton>
             </SoftBox>

@@ -33,13 +33,13 @@ function TodoPage() {
   const handleOpenNewTodo = () => setNewTodoOpen(true);
   const handleCloseNewTodo = () => setNewTodoOpen(false);
   const { auth, dispatch } = useContext(AuthContext);
-  const { todoContext, todoDispatch } = useContext(TodoContext)
+  const { todos, todoDispatch } = useContext(TodoContext)
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
         // if todo context > 0, stop the fetch request
-        if (todoContext.length) return;
+        if (todos.length) return;
         // if no context data available due to refresh or first time enter, fetch data and update context
         let res = await axios.get('http://localhost:8001/todos', {
           headers: {
@@ -48,9 +48,8 @@ function TodoPage() {
         });
         if (res.status === 200 && res.data.status == "success") {
           setTodoList([...res.data.data])
-          todoDispatch({type: 'FETCH_TODO', todos: res.data.data})
+          todoDispatch({type: 'FETCH_TODO', todoList: res.data.data})
         }
-        console.log('res ', res)
       } catch(e) {
         console.log('error ', e)
       }
@@ -58,9 +57,6 @@ function TodoPage() {
 
     fetchTodos()
   }, [])
-
-  console.log('todolist ', todoList);
-  console.log('todo context ', todoContext )
 
   return (
     <PageLayout>
@@ -94,9 +90,6 @@ function TodoPage() {
               <SoftTypography variant="h5" fontWeight="medium">
                 Todo List
               </SoftTypography>
-              {/* <SoftTypography variant="button" fontWeight="regular" color="text">
-                  A lightweight, extendable, dependency-free javascript HTML table plugin.
-              </SoftTypography> */}
               </SoftBox>
               <Stack spacing={1} direction="row">
                 <SoftButton variant="gradient" color="info" size="small" onClick={handleOpenNewTodo}>
@@ -114,7 +107,7 @@ function TodoPage() {
               </Stack>
           </SoftBox>
             <DataTable
-              table={generateTodoData(todoList)}
+              table={todos ? generateTodoData(todos.todos) : generateTodoData(todoList)}
               entriesPerPage={{
               defaultValue: 7,
               entries: [5, 7, 10, 15, 20, 25],
