@@ -43,9 +43,8 @@ function LoginPage() {
 
     try {
       // const response = await axios.post(`${process.env.REACT_APP_AUTH_SERVICE_DOMAIN}login`, {email, password});
-      // const response = await axios.post(`/auth/login`, {email, password});
-      
-      const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
+      // const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
+      const response = await axios.post(`/auth/login`, {email, password});
       if (response.status === 200 && response.data?.token) {
         sessionStorage.setItem("auth", JSON.stringify({token: response.data.token, isSignedIn: true}))
         dispatch({type: 'SIGN_IN_SUCCESS', auth: response.data});
