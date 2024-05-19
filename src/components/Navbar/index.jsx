@@ -166,7 +166,7 @@ function DefaultNavbar({ routes, transparent=false, light=false }) {
       </SoftBox>
 
       {mobileView && (
-        <DefaultNavbarMobile routes={routes} open={mobileNavbar} close={closeMobileNavbar}  isSignInPage={isSignInPage}/>
+        <DefaultNavbarMobile routes={routes} open={mobileNavbar} close={closeMobileNavbar} auth={auth} dispatch={dispatch} isSignInPage={isSignInPage}/>
       )}
     </Container>
   );

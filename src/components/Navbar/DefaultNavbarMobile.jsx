@@ -28,20 +28,14 @@ import SoftBox from "../SoftBox";
 // Soft UI Dashboard PRO React example components
 import DefaultNavbarLink from "./DefaultNavbarLink";
 
-// DefaultNavbar dropdown menus
-// import PagesMenu from "examples/Navbars/DefaultNavbar/Menus/PagesMenu";
-// import AuthenticationMenu from "examples/Navbars/DefaultNavbar/Menus/AuthenticationMenu";
-// import ApplicationsMenu from "examples/Navbars/DefaultNavbar/Menus/ApplicationsMenu";
-// import EcommerceMenu from "examples/Navbars/DefaultNavbar/Menus/EcommerceMenu";
-// import DocsMenu from "examples/Navbars/DefaultNavbar/Menus/DocsMenu";
-
-function DefaultNavbarMobile({ open, close, isSignInPage }) {
+function DefaultNavbarMobile({ open, close, isSignInPage, auth, dispatch }) {
   const { width } = open && open.getBoundingClientRect();
   const [openCollapse, setOpenCollapse] = useState(false);
 
   const handleSepOpenCollapse = (name) =>
     openCollapse === name ? setOpenCollapse(false) : setOpenCollapse(name);
 
+  console.log('auth in mobile ', auth)
   return (
     <Menu
       anchorOrigin={{
@@ -61,64 +55,51 @@ function DefaultNavbarMobile({ open, close, isSignInPage }) {
         <DefaultNavbarLink
           name="home"
           route={'/'}
-          // collapseStatus={openCollapse === "pages"}
-          // onClick={() => handleSepOpenCollapse("pages")}
         >
-          <SoftBox maxHeight="16rem" overflow="auto">
-            {/* <PagesMenu routes={routes} mobileMenu /> */}
-          </SoftBox>
+          <SoftBox maxHeight="16rem" overflow="auto"></SoftBox>
         </DefaultNavbarLink>
         <DefaultNavbarLink
           name="about"
           route={'/about'}
-          // collapseStatus={openCollapse === "authentication"}
           onClick={() => handleSepOpenCollapse("authentication")}
         >
-          <SoftBox maxHeight="16rem" overflow="auto">
-            {/* <AuthenticationMenu routes={routes} mobileMenu /> */}
-          </SoftBox>
+          <SoftBox maxHeight="16rem" overflow="auto"></SoftBox>
         </DefaultNavbarLink>
         <DefaultNavbarLink
           name="version"
           route={'/version'}
-          // collapseStatus={openCollapse === "applications"}
-          // onClick={() => handleSepOpenCollapse("applications")}
         >
-          <SoftBox maxHeight="16rem" overflow="auto">
-            {/* <ApplicationsMenu routes={routes} mobileMenu /> */}
-          </SoftBox>
+          <SoftBox maxHeight="16rem" overflow="auto"></SoftBox>
         </DefaultNavbarLink>
         <DefaultNavbarLink
           name="todo"
           route={'/todo'}
-          // collapseStatus={openCollapse === "ecommerce"}
           onClick={() => handleSepOpenCollapse("ecommerce")}
         >
           <SoftBox maxHeight="16rem" overflow="auto">
             {/* <EcommerceMenu routes={routes} mobileMenu /> */}
           </SoftBox>
         </DefaultNavbarLink>
-        { isSignInPage 
+        { 
+         auth && auth.isSignedIn 
           ? <DefaultNavbarLink
-              name="register"
+              name="Sign out"
               route={'/auth/register'}
-              // collapseStatus={openCollapse === "docs"}
-              // onClick={() => handleSepOpenCollapse("docs")}
-            >
-              <SoftBox maxHeight="16rem" overflow="auto">
-                {/* <DocsMenu routes={routes} mobileMenu /> */}
-              </SoftBox>
-            </DefaultNavbarLink>
-          : <DefaultNavbarLink
-              name="login"
-              route={'/auth/login'}
-              // collapseStatus={openCollapse === "docs"}
-              // onClick={() => handleSepOpenCollapse("docs")}
-            >
-              <SoftBox maxHeight="16rem" overflow="auto">
-                {/* <DocsMenu routes={routes} mobileMenu /> */}
-              </SoftBox>
-            </DefaultNavbarLink>
+              onClick={() => dispatch({type: 'SIGN_OUT'})}
+            />
+          : isSignInPage
+            ? <DefaultNavbarLink
+                name="register"
+                route={'/auth/register'}
+              >
+                <SoftBox maxHeight="16rem" overflow="auto"></SoftBox>
+              </DefaultNavbarLink>
+            : <DefaultNavbarLink
+                name="login"
+                route={'/auth/login'}
+              >
+                <SoftBox maxHeight="16rem" overflow="auto"></SoftBox>
+              </DefaultNavbarLink>
         }
       </SoftBox>
     </Menu>
