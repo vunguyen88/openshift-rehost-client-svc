@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import axios from "axios";
 // @mui material components
@@ -15,25 +15,32 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from "moment";
 import AuthContext from "../../../context/authContext";
+import TodoContext from "../../../context/todoContext";
+import Notification from "../../../components/Notification";
+
 
 function NewTodo() {
   const [ targetDate, setTargetDate ] = useState("");
   const [ title, setTitle ] = useState("");
   const [ reminder, setReminder ] = useState(false);
   const { auth, dispatch } = useContext(AuthContext);
+  const { todoContext, todoDispatch } = useContext(TodoContext);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
 
   const handleReminderChange = (e) => {
-    console.log('reminder ', e)
     setReminder(e.value);
   };
+
   const onSubmit = async () => {
-    console.log(`click submit with value ${title} ${targetDate} ${reminder}`);
     try {
       let reqBody = {
         title: title,
         completed: false,
-        setReminder: reminder,
-        targetDate: targetDate
+        set_reminder: reminder,
+        target_date: targetDate
       };
 
       let config = {
@@ -43,8 +50,17 @@ function NewTodo() {
       };
 
       let res = await axios.post(`http://localhost:8001/todos`, reqBody, config)
-      console.log('res post ', res)
+      if (res.status === 201 && res.data?.status === "success") {
+        // trigger alert
+        setAlertMessage('Add new todo successful!');
+        setAlertSeverity('success');
+        setAlertVisible(true);
+        todoDispatch({type: 'ADD_TODO', newTodo: res.data.data});
+      }
     } catch(err) {
+      setAlertMessage(err.message);
+      setAlertSeverity('error');
+      setAlertVisible(true);
       console.error(err);
     }
   }
@@ -53,10 +69,16 @@ function NewTodo() {
     <SoftBox  
       sx={{position: "absolute", top:"50%", left: "50%", transform: 'translate(-50%, -50%)', width: "100%"}}
     >
+      <Notification 
+        visible={alertVisible} 
+        message={alertMessage} 
+        severity={alertSeverity}
+        position="top"
+      />
       <Grid container justifyContent="center">
         <Grid item xs={12} sm={10} lg={8}>
           <Card sx={{ overflow: "visible" }}>
-            <SoftBox p={4}>
+            <SoftBox p={4} my={4}>
               {/* <SoftBox> */}
                 <SoftBox my={2} width="100%" display="flex" flexDirection="column">
                   <SoftBox>

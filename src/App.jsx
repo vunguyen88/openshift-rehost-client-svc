@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import VersionPage from "./pages/Version";
 
 import { AuthContextProvider } from './context/authContext';
+import { TodoContextProvider } from './context/todoContext';
 // import AuthContext from './context/authContext';
 import AuthRoute from './components/AuthRoute';
 
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <AuthContextProvider>
+      <TodoContextProvider>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -28,6 +30,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ThemeProvider>
+      </TodoContextProvider>
     </AuthContextProvider>
     
   )

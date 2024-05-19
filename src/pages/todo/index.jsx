@@ -24,6 +24,7 @@ import DataTable from "../../components/Table"
 // Data
 import generateTodoData from "./components/TableData";
 import AuthContext from "../../context/authContext";
+import TodoContext from "../../context/todoContext";
 
 function TodoPage() {
 
@@ -31,18 +32,24 @@ function TodoPage() {
   const [todoList, setTodoList] = useState([]);
   const handleOpenNewTodo = () => setNewTodoOpen(true);
   const handleCloseNewTodo = () => setNewTodoOpen(false);
-  const {auth, dispatch } = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
+  const { todos, todoDispatch } = useContext(TodoContext)
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
+        // if todo context > 0, stop the fetch request
+        if (todos.length) return;
+        // if no context data available due to refresh or first time enter, fetch data and update context
         let res = await axios.get('http://localhost:8001/todos', {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`
           }
         });
-        if (res.status === 200 && res.data.status == "success") setTodoList([...res.data.data])
-        console.log('res ', res)
+        if (res.status === 200 && res.data.status == "success") {
+          setTodoList([...res.data.data])
+          todoDispatch({type: 'FETCH_TODO', todoList: res.data.data})
+        }
       } catch(e) {
         console.log('error ', e)
       }
@@ -50,8 +57,6 @@ function TodoPage() {
 
     fetchTodos()
   }, [])
-
-  console.log('todolist ', todoList)
 
   return (
     <PageLayout>
@@ -85,9 +90,6 @@ function TodoPage() {
               <SoftTypography variant="h5" fontWeight="medium">
                 Todo List
               </SoftTypography>
-              {/* <SoftTypography variant="button" fontWeight="regular" color="text">
-                  A lightweight, extendable, dependency-free javascript HTML table plugin.
-              </SoftTypography> */}
               </SoftBox>
               <Stack spacing={1} direction="row">
                 <SoftButton variant="gradient" color="info" size="small" onClick={handleOpenNewTodo}>
@@ -105,7 +107,7 @@ function TodoPage() {
               </Stack>
           </SoftBox>
             <DataTable
-              table={generateTodoData(todoList)}
+              table={todos ? generateTodoData(todos.todos) : generateTodoData(todoList)}
               entriesPerPage={{
               defaultValue: 7,
               entries: [5, 7, 10, 15, 20, 25],

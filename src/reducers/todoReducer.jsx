@@ -1,18 +1,29 @@
 // Reducer function to handle state updates
-const todoReducer = (state, action) => {
+export const todoReducer = (state, action) => {
   
   switch (action.type) {
+    case 'FETCH_TODO':
+      return { todos: [...action.todoList] }
+
     case 'ADD_TODO':
-      console.log('action ', action)
-      return [
-        ...state,
-        action.data
-      ];
-    case 'DELETE_TODO':
       return {
-        ...state,
-        todos: state.todos.filter(todo => todo.id !== action.payload)
+        todos: [...state.todos, action.newTodo]
       };
+
+    case 'UPDATE_TODO_STATUS': {
+      let updateTodos = state.todos.map(todo => todo.id === action.todoId ? {...todo, completed: true} : {...todo})
+      return {
+        todos: [...updateTodos]
+      };
+    }
+
+    case 'DELETE_TODO': {
+      let updateTodos = state.todos.filter(todo => todo.id !== action.todoId)
+      return {
+        todos: [...updateTodos]
+      };
+    }
+    
     default:
       return state;
   }
