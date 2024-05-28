@@ -54,16 +54,16 @@ function VersionPage() {
                 fontSize={{ xs: d5.fontSize, sm: d4.fontSize, md: d3.fontSize, lg: d1.fontSize }}
                 lineHeight={1.2}
               >
-                <SoftTypography variant="inherit" color="error" textGradient fontWeight="bold">
+                <SoftTypography variant="inherit" color="warning" textGradient fontWeight="bold">
                   Version Page
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h2" color="dark" textGradient fontWeight="bold">
-                Erm. Page not found
+                Page is under construction
               </SoftTypography>
               <SoftBox mt={1} mb={2}>
                 <SoftTypography variant="body1" color="text">
-                  We suggest you to go to the homepage while we solve this issue.
+                  We suggest you to come back later.
                 </SoftTypography>
               </SoftBox>
               <SoftBox mt={4} mb={2}>

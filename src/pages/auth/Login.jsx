@@ -123,8 +123,8 @@ function LoginPage() {
                 Login
               </SoftButton>
             </SoftBox>
-            <Separator />
-            <SoftBox mt={1} mb={3}>
+            {/* <Separator /> */}
+            {/* <SoftBox mt={1} mb={3}>
               <SoftButton
                 component={Link}
                 to="/auth/register"
@@ -134,7 +134,22 @@ function LoginPage() {
               >
                 Register
               </SoftButton>
-            </SoftBox>
+            </SoftBox> */}
+            <SoftBox mt={3} textAlign="center">
+                <SoftTypography variant="button" color="text" fontWeight="regular">
+                  Don't have an account with us &nbsp;
+                  <SoftTypography
+                    component={Link}
+                    to="/auth/register"
+                    variant="button"
+                    color="info"
+                    fontWeight="medium"
+                    //textGradient
+                  >
+                  Sign up
+                  </SoftTypography>
+                </SoftTypography>
+              </SoftBox>
           </SoftBox>
         </SoftBox>
       </Card>
