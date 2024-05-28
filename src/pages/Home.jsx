@@ -63,7 +63,17 @@ function HomePage() {
               </SoftTypography>
               <SoftBox mt={1} mb={2}>
                 <SoftTypography variant="body1" color="text">
-                  A devops demo project with AWS EKS, Terraform, Automation, CodeBuild, CodePipelines
+                  A devops demo project using AWS as a Cloud Provider
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mt={1} mb={2}>
+                <SoftTypography variant="body1" color="text">
+                  AWS Services: EKS, ECR, SQS, SES, Lambda, RDS (Postgres), DynamoDB, Cloud Formation, S3 
+                </SoftTypography>
+              </SoftBox>
+              <SoftBox mt={1} mb={2}>
+                <SoftTypography variant="body1" color="text">
+                  Tools: Github, Github Actions, Terraform, Helm, Docker, Kubernetes, Helm, Jenkins, Automation
                 </SoftTypography>
               </SoftBox>
               {/* <SoftBox mt={4} mb={2}>
