@@ -16,8 +16,6 @@ import SoftButton from "../../components/SoftButton";
 
 // Authentication layout components
 import AuthLayout from "./AuthLayout";
-// import Socials from "layouts/authentication/components/Socials";
-import Separator from "../../components/Separator";
 
 import AuthContext from "../../context/authContext";
 
@@ -42,9 +40,16 @@ function LoginPage() {
     if (!email || !emailRegex.test(email)) return setError('Email not valid');
 
     try {
-      // const response = await axios.post(`${process.env.REACT_APP_AUTH_SERVICE_DOMAIN}login`, {email, password});
-      // const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
-      const response = await axios.post(`/auth/login`, {email, password});
+      sessionStorage.setItem('email', email);
+      const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
+      // const response = await axios.post(`/auth/login`, {email, password});
+
+      // user has MFAEnabled, redirect to MFA page
+      if (response.status === 200 && response.data?.MFAEnabled) {
+        return navigate(`/auth/verify`)
+      }
+
+      // user dont have MFAEnabled, continue 
       if (response.status === 200 && response.data?.token) {
         sessionStorage.setItem("auth", JSON.stringify({token: response.data.token, isSignedIn: true}))
         dispatch({type: 'SIGN_IN_SUCCESS', auth: response.data});
@@ -74,9 +79,6 @@ function LoginPage() {
             Sign in
           </SoftTypography>
         </SoftBox>
-        {/* <SoftBox mb={2}>
-          <Socials />
-        </SoftBox> */}
         <SoftBox p={3}>
           <SoftBox component="form" role="form">
             <SoftBox mb={2}>
@@ -98,7 +100,7 @@ function LoginPage() {
             </SoftBox>
             {
               loginStatus === 'success' &&
-              <SoftBox display="flex" pt={1.5} pl={.5}>
+              <SoftBox display="flex" pt={2} mb={-2} pl={.5}>
                   <SoftTypography variant="caption" fontWeight="bold" color="info" >
                       Success. Click &nbsp; 
                   </SoftTypography>
@@ -123,18 +125,6 @@ function LoginPage() {
                 Login
               </SoftButton>
             </SoftBox>
-            {/* <Separator /> */}
-            {/* <SoftBox mt={1} mb={3}>
-              <SoftButton
-                component={Link}
-                to="/auth/register"
-                variant="gradient"
-                color="dark"
-                fullWidth
-              >
-                Register
-              </SoftButton>
-            </SoftBox> */}
             <SoftBox mt={3} textAlign="center">
                 <SoftTypography variant="button" color="text" fontWeight="regular">
                   Don't have an account with us &nbsp;

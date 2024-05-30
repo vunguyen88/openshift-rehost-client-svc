@@ -3,6 +3,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./assets/theme";
 import LoginPage from "./pages/auth/Login";
 import ReigsterPage from "./pages/auth/Register";
+import AuthVerificationPage from "./pages/auth/AuthVerification";
 import TodoPage from "./pages/todo";
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<ReigsterPage />} />
+          <Route path="/auth/verify" element={<AuthVerificationPage />} />
           <Route path="/version" element={<VersionPage />} />
           <Route path="/todo" element={<AuthRoute><TodoPage /></AuthRoute>} />
           <Route path="*" element={<NotFound />} />
