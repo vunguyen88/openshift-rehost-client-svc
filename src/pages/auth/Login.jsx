@@ -41,8 +41,8 @@ function LoginPage() {
 
     try {
       sessionStorage.setItem('email', email);
-      const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
-      // const response = await axios.post(`/auth/login`, {email, password});
+      // const response = await axios.post(`http://localhost:8000/auth/login`, {email, password});
+      const response = await axios.post(`/auth/login`, {email, password});
 
       // user has MFAEnabled, redirect to MFA page
       if (response.status === 200 && response.data?.MFAEnabled) {

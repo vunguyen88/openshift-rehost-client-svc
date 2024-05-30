@@ -58,8 +58,8 @@ function AuthVerificationPage() {
     if (authCode.length !== 4) return setError('Code not valid');
     const email = sessionStorage.getItem("email");
     try {
-      const response = await axios.post(`http://localhost:8000/auth/verify`, {authCode, email});
-      // const response = await axios.post(`/auth/verify`, {authCode, email}); 
+      // const response = await axios.post(`http://localhost:8000/auth/verify`, {authCode, email});
+      const response = await axios.post(`/auth/verify`, {authCode, email}); 
       if (response?.data?.status === 'success' && response?.data?.token) {
         sessionStorage.setItem("auth", JSON.stringify({token: response.data.token, isSignedIn: true}))
         dispatch({type: 'SIGN_IN_SUCCESS', auth: response.data});
