@@ -41,8 +41,8 @@ function RegisterPage() {
     if (!agreement) return setError('You must agreement to Term and Conditions');
 
     try {
-      const response = await axios.post(`http://localhost:8000/auth/register`, {email, password, MFAEnabled});
-      // const response = await axios.post(`/auth/register`, {email, password, MFAEnabled}); 
+      // const response = await axios.post(`http://localhost:8000/auth/register`, {email, password, MFAEnabled});
+      const response = await axios.post(`/auth/register`, {email, password, MFAEnabled}); 
       if (response.status === 200 && response.data?.token) {
         sessionStorage.setItem("auth", JSON.stringify({token: response.data.token, isSignedIn: true}))
         dispatch({type: 'SIGN_IN_SUCCESS', auth: response.data});
