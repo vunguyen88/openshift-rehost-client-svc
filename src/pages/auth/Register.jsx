@@ -17,7 +17,7 @@ import SoftButton from "../../components/SoftButton";
 // Authentication layout components
 import AuthLayout from "./AuthLayout";
 // import Socials from "layouts/authentication/components/Socials";
-import Separator from "../../components/Separator";
+// import Separator from "../../components/Separator";
 
 // Images
 import curved6 from "../../assets/images/curved6.jpg";
@@ -27,22 +27,22 @@ import AuthContext from "../../context/authContext";
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [agreement, setAgreement] = useState(false);
+  const [MFAEnabled, setMFAEnabled] = useState(false);
   const [error, setError] = useState("");
   const [registerStatus, setRegisterStatus] = useState(false);
   const {dispatch} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
-  const handleOnLoginSubmit = async (e) => {
+  const handleOnRegisterSubmit = async (e) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) return setError('Email not valid');
+    if (!agreement) return setError('You must agreement to Term and Conditions');
 
     try {
-      // const response = await axios.post(`${process.env.REACT_APP_AUTH_SERVICE_DOMAIN}login`, {email, password});
-      // const response = await axios.post(`http://localhost:8000/auth/register`, {email, password});
-      const response = await axios.post(`/auth/register`, {email, password}); 
+      const response = await axios.post(`http://localhost:8000/auth/register`, {email, password, MFAEnabled});
+      // const response = await axios.post(`/auth/register`, {email, password, MFAEnabled}); 
       if (response.status === 200 && response.data?.token) {
         sessionStorage.setItem("auth", JSON.stringify({token: response.data.token, isSignedIn: true}))
         dispatch({type: 'SIGN_IN_SUCCESS', auth: response.data});
@@ -83,12 +83,13 @@ function RegisterPage() {
             <SoftBox mb={2}>
               <SoftInput type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
             </SoftBox>
+
             {
               registerStatus !== 'success' &&
-              <SoftBox display="flex" alignItems="center">
+              <SoftBox display="flex" alignItems="center" mb={1}>
                 <Checkbox 
-                //checked={agreement} 
-                //onChange={handleSetAgremment}
+                  checked={MFAEnabled} 
+                  onChange={() => setMFAEnabled(!MFAEnabled)}
                 />
                 <SoftTypography
                   variant="button"
@@ -96,54 +97,80 @@ function RegisterPage() {
                   //onClick={handleSetAgremment}
                   sx={{ cursor: "pointer", userSelect: "none" }}
                 >
-                &nbsp;&nbsp;I agree the&nbsp;
+                &nbsp;&nbsp;Enable MFA&nbsp;
                 </SoftTypography>
-                <SoftTypography component="a" href="#" variant="button" fontWeight="bold" textGradient>
-                  Terms and Conditions
-                </SoftTypography>
-              </SoftBox>
-            }
-            
-            {
-              registerStatus === 'success' &&
-              <SoftBox display="flex" pt={1.5} pl={1}>
-                  <SoftTypography variant="caption" fontWeight="bold" color="info" >
-                      Success. Click &nbsp; 
-                  </SoftTypography>
-                  <SoftTypography variant="caption" fontWeight="bold" sx={{cursor: "pointer"}} color="dark" onClick={() => navigate(`/todo`)}>
-                      here &nbsp; 
-                  </SoftTypography>
-                  <SoftTypography variant="caption" fontWeight="bold" color="info">
-                      to create your todo list
-                  </SoftTypography>
+
               </SoftBox>
             }
 
             {
-              <SoftBox mt={4} mb={1}>
-                <SoftButton variant="gradient" color="info" fullWidth onClick={ handleOnLoginSubmit } disabled={registerStatus ? true : false}>
-                  Sign up
-                </SoftButton>
-              </SoftBox>
+              registerStatus !== 'success' &&
+                <SoftBox display="flex" alignItems="center">
+                  <Checkbox 
+                    checked={agreement} 
+                    onChange={() => setAgreement(!agreement)}
+                  />
+                  <SoftTypography
+                    variant="button"
+                    fontWeight="regular"
+                    //onClick={handleSetAgremment}
+                    sx={{ cursor: "pointer", userSelect: "none" }}
+                  >
+                  &nbsp;&nbsp;I agree the&nbsp;
+                  </SoftTypography>
+                  <SoftTypography component="a" href="#" variant="button" fontWeight="bold" textGradient>
+                    Terms and Conditions
+                  </SoftTypography>
+                </SoftBox>
             }
             
             {
-              registerStatus !== 'success' &&
-              <SoftBox mt={3} textAlign="center">
-                <SoftTypography variant="button" color="text" fontWeight="regular">
-                  Already have an account?&nbsp;
-                  <SoftTypography
-                    component={Link}
-                    to="/auth/login"
-                    variant="button"
-                    color="info"
-                    fontWeight="medium"
-                    //textGradient
-                  >
-                  Sign in
+              registerStatus === 'success' &&
+                <SoftBox display="flex" pt={1.5} pl={1}>
+                    <SoftTypography variant="caption" fontWeight="bold" color="info" >
+                        Success. Click &nbsp; 
+                    </SoftTypography>
+                    <SoftTypography variant="caption" fontWeight="bold" sx={{cursor: "pointer"}} color="dark" onClick={() => navigate(`/todo`)}>
+                        here &nbsp; 
+                    </SoftTypography>
+                    <SoftTypography variant="caption" fontWeight="bold" color="info">
+                        to create your todo list
+                    </SoftTypography>
+                </SoftBox>
+            }
+
+            {
+              error &&
+                <SoftBox display="flex" pt={2} mb={-1} pl={.5}>
+                  <SoftTypography variant="caption" fontWeight="bold" color="error" >
+                    {error ? error : 'Error in register'} 
                   </SoftTypography>
-                </SoftTypography>
-              </SoftBox>
+                </SoftBox>
+            }
+
+            <SoftBox mt={3} mb={1}>
+              <SoftButton variant="gradient" color="info" fullWidth onClick={ handleOnRegisterSubmit } disabled={registerStatus ? true : false}>
+                Sign up
+              </SoftButton>
+            </SoftBox>
+            
+            {
+              registerStatus !== 'success' &&
+                <SoftBox mt={3} textAlign="center">
+                  <SoftTypography variant="button" color="text" fontWeight="regular">
+                    Already have an account?&nbsp;
+                    <SoftTypography
+                      component={Link}
+                      to="/auth/login"
+                      variant="button"
+                      color="info"
+                      fontWeight="medium"
+                      //textGradient
+                    >
+                    Sign in
+                    </SoftTypography>
+                  </SoftTypography>
+                </SoftBox>
             }
           </SoftBox>
         </SoftBox>
