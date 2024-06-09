@@ -18,7 +18,7 @@ env:
   EKS_CLUSTER: todo-eks
 
 jobs:
-  BUILD_AND_PUBLISH:
+  BUILD_IMAGE:
     runs-on: ubuntu-latest
     steps:
       - name: Code checkout
@@ -48,9 +48,35 @@ jobs:
       #     daemon_off: false
       #     dockerfile: ./Dockerfile
       #     context: ./
+  RUNNING_TEST:
+    needs: BUILD_IMAGE
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Run tests with coverage
+        run: npm test -- --coverage --watchAll=false
+
+      - name: Check coverage
+        run: |
+          COVERAGE=$(npx jest --coverage --json --outputFile=coverage-summary.json)
+          COVERAGE_PERCENT=$(jq '.total.statements.pct' < coverage-summary.json)
+          echo "Coverage: $COVERAGE_PERCENT%"
+          if (( $(echo "$COVERAGE_PERCENT < 50" | bc -l) )); then
+            echo "Code coverage below 50%"
+            exit 1
+          fi
   DEPLOY_TO_EKS:
-    needs: BUILD_AND_PUBLISH
+    needs: RUNNING_TEST
     runs-on: ubuntu-latest
     steps:
       - name: Code checkout
