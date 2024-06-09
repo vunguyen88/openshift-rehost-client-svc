@@ -8,6 +8,6 @@ module.exports = {
   testEnvironment: 'jsdom',
   collectCoverage: true,
   coverageDirectory: "coverage",
-  coverageReporters: ["json", "lcov", "text", "clover"],
+  coverageReporters: ["lcov", "text", "clover", "json-summary"],
   testPathIgnorePatterns: ["<rootDir>/node_modules/"]
 };
