@@ -1,13 +1,9 @@
-// react-router-dom components
-import { Link } from "react-router-dom";
-
 // @mui material components
 import Grid from "@mui/material/Grid";
 
 // Soft UI Dashboard PRO React components
 import SoftBox from "../components/SoftBox";
 import SoftTypography from "../components/SoftTypography";
-import SoftButton from "../components/SoftButton";
 
 // Soft UI Dashboard PRO React example components
 import DefaultNavbar from "../components/Navbar";
@@ -18,9 +14,6 @@ import typography from "../assets/theme/base/typography";
 
 // Authentication layout components
 //import Footer from "layouts/authentication/components/Footer";
-
-// Soft UI Dashboard PRO React page layout routes
-//import pageRoutes from "page.routes";
 
 // Images
 import rocket from "../assets/images/rocket.png";

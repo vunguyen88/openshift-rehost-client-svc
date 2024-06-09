@@ -19,9 +19,6 @@ import typography from "../assets/theme/base/typography";
 // Authentication layout components
 //import Footer from "layouts/authentication/components/Footer";
 
-// Soft UI Dashboard PRO React page layout routes
-//import pageRoutes from "page.routes";
-
 // Images
 import error404 from "../assets/images/error-404.png";
 
