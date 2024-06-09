@@ -127,7 +127,7 @@ function LoginPage() {
             </SoftBox>
             <SoftBox mt={3} textAlign="center">
                 <SoftTypography variant="button" color="text" fontWeight="regular">
-                  Don't have an account with us &nbsp;
+                  Don&apos;t have an account with us &nbsp;
                   <SoftTypography
                     component={Link}
                     to="/auth/register"
