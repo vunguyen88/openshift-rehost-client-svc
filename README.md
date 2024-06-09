@@ -29,6 +29,6 @@ docker run -p 3000:3000 todo-eks-client-vite
 The repo pipeline setup for both manually and automatically deployment using Github Actions to automatically perform following scripts:
   - checkout code
   - install dependencies
-  - running test case
+  - running test case and only allow pass for certain percentage of test coverage (temporary set at 39% for demo)
   - Build and push image to AWS ECR
   - Update Kubernetes Config file and rollout new update to Kubernetes cluster.
