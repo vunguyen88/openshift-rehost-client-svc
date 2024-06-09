@@ -68,11 +68,16 @@ jobs:
 
       - name: Check coverage (temporary allow pass for coverage above 39%)
         run: |
-          COVERAGE=$(npx jest --coverage --json --outputFile=coverage-summary.json)
-          COVERAGE_PERCENT=$(jq '.total.statements.pct' < coverage-summary.json)
-          echo "Coverage: $COVERAGE_PERCENT%"
-          if (( $(echo "$COVERAGE_PERCENT < 39" | bc -l) )); then
-            echo "Code coverage below 50%"
+          COVERAGE_FILE=coverage/coverage-summary.json
+          if [ -f "$COVERAGE_FILE" ]; then
+            COVERAGE_PERCENT=$(jq '.total.statements.pct' < $COVERAGE_FILE)
+            echo "Coverage: $COVERAGE_PERCENT%"
+            if (( $(echo "$COVERAGE_PERCENT < 50" | bc -l) )); then
+              echo "Code coverage below 50%"
+              exit 1
+            fi
+          else
+            echo "Coverage report not found!"
             exit 1
           fi
   DEPLOY_TO_EKS:
