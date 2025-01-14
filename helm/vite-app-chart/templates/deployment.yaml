@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  namespace: {{ .Values.namespace | default "default" }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: frontend
+    spec: # Pod spec
+      containers:
+        - name: {{ .Values.appName }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          # ports:
+          #   - containerPort: {{ .Values.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ tpl (printf "%s-config" .Release.Name) . | lower | quote }}
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m" # 100 milli cores (1/10 CPU)
+            limits:
+              memory: "128Mi" # 128 mebibytes
+              cpu: "200m" # 200 milli cores (1/5 CPU)

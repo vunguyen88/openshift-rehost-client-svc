@@ -20,9 +20,15 @@ Clone this repository to your local machine using the following command:
 
 ### 2. Build the app using Dockerfile
 ```sh
-docker build -t todo-eks-client-vite .
+docker build -t todo-openshift-client .
 ```
-### 3. Run and map port 3000 to React + Vite app server
+
+### 3. Push image to Docker Hub
+```sh
+docker push vunguyen88/todo-openshift-client:latest
+```
+
+<!-- ### 4. Run and map port 3000 to React + Vite app server
 ```sh
 docker run -p 3000:3000 todo-eks-client-vite 
 ```
@@ -31,4 +37,52 @@ The repo pipeline setup for both manually and automatically deployment using Git
   - install dependencies
   - running test case and only allow pass for certain percentage of test coverage (temporary set at 39% for demo)
   - Build and push image to AWS ECR
-  - Update Kubernetes Config file and rollout new update to Kubernetes cluster.
+  - Update Kubernetes Config file and rollout new update to Kubernetes cluster. -->
+
+## Helm
+
+# Create namespace dev(prod) for dev(prod) env
+```
+kubectl create namespace dev
+```
+
+```
+kubectl create namespace dev
+```
+
+# Install chart
+
+In the root folder, run following cmd to install the chart with value using dev-env in dev namespace
+```
+helm install vite-app-release-dev helm/vite-app-chart/ --values helm/vite-app-chart/values.yaml -f helm/vite-app-chart/values-dev.yaml -n dev
+```
+or prod values env in prod name space
+```
+helm install vite-app-release-dev helm/vite-app-chart --values helm/vite-app-chart/values.yaml -f helm/vite-app-chart/values-prod.yaml -n prod
+```
+# Upgrade chart
+For dev env
+```
+helm upgrade vite-app-release-dev helm/vite-app-chart --values helm/vite-app-chart/values.yaml -f helm/vite-app-chart/values-dev.yaml -n dev
+```
+
+For prod env
+```
+helm upgrade vite-app-release-prod helm/vite-app-chart --values helm/vite-app-chart/values.yaml -f helm/vite-app-chart/values-prod.yaml -n prod
+```
+
+# List all charts for associate with namespace
+```
+helm ls --all-namespaces
+```
+
+# To switch between namespace
+```
+kubectl config set-context --current --namespace=dev
+```
+
+# Accessing the application
+```
+minikube tunnel
+```
+If the minikube tunnel already exist, find the PID of the 
