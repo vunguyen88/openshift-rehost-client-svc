@@ -28,17 +28,6 @@ docker build -t todo-openshift-client .
 docker push vunguyen88/todo-openshift-client:latest
 ```
 
-<!-- ### 4. Run and map port 3000 to React + Vite app server
-```sh
-docker run -p 3000:3000 todo-eks-client-vite 
-```
-The repo pipeline setup for both manually and automatically deployment using Github Actions to automatically perform following scripts:
-  - checkout code
-  - install dependencies
-  - running test case and only allow pass for certain percentage of test coverage (temporary set at 39% for demo)
-  - Build and push image to AWS ECR
-  - Update Kubernetes Config file and rollout new update to Kubernetes cluster. -->
-
 ## Helm
 
 # Create namespace dev(prod) for dev(prod) env
