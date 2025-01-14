@@ -16,11 +16,8 @@ import { TodoContextProvider } from './context/todoContext';
 import AuthRoute from './components/AuthRoute';
 
 function App() {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const env = import.meta.env.VITE_ENV;
-  
-  console.log("API URL:", apiUrl);
-  console.log("Environment:", env);
+  const authService = import.meta.env.VITE_AUTH_SERVICE_URL;
+  console.log("authService:", authService);
 
   return (
     <AuthContextProvider>

@@ -2,7 +2,7 @@ namespace: default
 
 appName: frontend-app-vite
 
-replicas: 0
+replicas: 1
 
 port: 3000
 
@@ -15,10 +15,4 @@ service:
 image:
   name: vunguyen88/todo-openshift-client
   tag: latest
-  pullPolicy: IfNotPresent
-
-env:
-  configMapName: app-config
-  keys:
-    VITE_API_URL: "https://api.default.com"
-    VITE_ENV: "default"
+  pullPolicy: Always

@@ -10,11 +10,23 @@ COPY package.json package-lock.json ./
 # Install dependencies
 RUN npm install
 
+
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the Vite app for production
-RUN npm run build
+# Set environment variables based on build target
+ARG NODE_ENV
+ENV NODE_ENV=${NODE_ENV}
+
+# Copy the appropriate .env file
+COPY .env.${NODE_ENV} .env
+
+# Run the appropriate Vite build command
+RUN if [ "$NODE_ENV" = "development" ]; then \
+    npm run build -- --mode development; \
+  else \
+    npm run build; \
+  fi
 
 # Use a lightweight Node.js image for production
 FROM node:alpine

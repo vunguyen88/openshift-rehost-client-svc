@@ -1,6 +1,6 @@
 apiVersion: v2
-name: client-vite
-description: A Helm chart for Kubernetes
+name: client-svc-vite
+description: A Helm chart for Vite app
 
 # A chart can be either an 'application' or a 'library' chart.
 #

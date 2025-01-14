@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.appName }}
+  name: {{ printf "%s-%s" .Values.appName .Values.namespace  }}
   namespace: {{ .Values.namespace | default "default" }}
   labels:
     app: {{ .Values.appName }}
@@ -16,13 +16,15 @@ spec:
       labels:
         app: {{ .Values.appName }}
         tier: frontend
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec: # Pod spec
       containers:
         - name: {{ .Values.appName }}
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # ports:
-          #   - containerPort: {{ .Values.port }}
+          ports:
+            - containerPort: {{ .Values.port }}
           envFrom:
             - configMapRef:
                 name: {{ tpl (printf "%s-config" .Release.Name) . | lower | quote }}

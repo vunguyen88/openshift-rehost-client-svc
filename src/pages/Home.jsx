@@ -20,6 +20,7 @@ import rocket from "../assets/images/rocket.png";
 
 function HomePage() {
   const { d1, d3, d4, d5 } = typography;
+  const env = import.meta.env.VITE_ENV;
 
   return (
     <PageLayout white>
